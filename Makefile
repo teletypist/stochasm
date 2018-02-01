@@ -1,4 +1,4 @@
-SLUG = Template
+SLUG = com-soundchasing-stochasm
 VERSION = 0.5.0
 
 # FLAGS will be passed to both the C and C++ compiler
