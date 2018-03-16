@@ -10,6 +10,8 @@ extern Plugin *plugin;
 // module widgets
 ////////////////////
 
+extern Model *modelResonator;
+
 struct StochasmKnob : SVGKnob {
     StochasmKnob() {
         minAngle = -0.75*M_PI;
@@ -57,9 +59,8 @@ struct TangerineMomentarySwitch : SVGSwitch, MomentarySwitch {
 };
 
 
-
+/*
 struct ResonatorWidget : ModuleWidget {
 	ResonatorWidget();
 };
-
-
+*/
