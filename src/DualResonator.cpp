@@ -2,7 +2,7 @@
 
 #define LFSR_TAPS_MAX_32 0xA3000000u;
 
-struct Resonator : Module {
+struct DualResonator : Module {
 	enum ParamIds {
         UPPER_CHAMBER,
         UPPER_FILTER1,
@@ -34,38 +34,6 @@ struct Resonator : Module {
 	};
 
     const int FILTER_MASK[11] = {15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383};
-    const float SINC_KERNEL[32] = {-8.6674061335e-19f,
-                                    0.000259580203622f,
-                                    0.00112110787637f,
-                                    0.00277236007608f,
-                                    0.0054606784225f,
-                                    0.00944071422472f,
-                                    0.0149059711734f,
-                                    0.0219180119438f,
-                                    0.030348958526f,
-                                    0.0398514114854f,
-                                    0.049865316607f,
-                                    0.059664461409f,
-                                    0.0684375355353f,
-                                    0.0753916134513f,
-                                    0.0798609898553f,
-                                    0.0814025784203f,
-                                    0.0798609898553f,
-                                    0.0753916134513f,
-                                    0.0684375355353f,
-                                    0.059664461409f,
-                                    0.049865316607f,
-                                    0.0398514114854f,
-                                    0.030348958526f,
-                                    0.0219180119438f,
-                                    0.0149059711734f,
-                                    0.00944071422472f,
-                                    0.0054606784225f,
-                                    0.00277236007608f,
-                                    0.00112110787637f,
-                                    0.000259580203622f,
-                                    -8.6674061335e-19f,
-                                    0.0f,};
     const float IIR_FILTER_DECAY = 0.09350953781417137f;
 
     unsigned char uDelay[65536] = {0};
@@ -99,7 +67,7 @@ struct Resonator : Module {
     float lPre = 0.f;
 
 
-	Resonator() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	DualResonator() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 	void step() override;
 
 	// For more advanced Module features, read Rack's engine.hpp header file
@@ -109,7 +77,7 @@ struct Resonator : Module {
 };
 
 
-void Resonator::step() {
+void DualResonator::step() {
         int i;
         
         uDelaySize = pow(2, clamp(params[UPPER_CHAMBER].value + inputs[UPPER_VOCT].value, 0.f, 10.f) +6);
@@ -223,12 +191,12 @@ void Resonator::step() {
 	}
 
 
-struct ResonatorWidget : ModuleWidget {
-	ResonatorWidget(Resonator *module);
+struct DualResonatorWidget : ModuleWidget {
+	DualResonatorWidget(DualResonator *module);
 };
 
 
-ResonatorWidget::ResonatorWidget(Resonator *module) : ModuleWidget(module) {
+DualResonatorWidget::DualResonatorWidget(DualResonator *module) : ModuleWidget(module) {
 	
 	//Resonator *module = new Resonator();
 	//setModule(module);
@@ -238,7 +206,7 @@ ResonatorWidget::ResonatorWidget(Resonator *module) : ModuleWidget(module) {
 	{
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load(assetPlugin(plugin, "res/Resonator.svg")));
+		panel->setBackground(SVG::load(assetPlugin(plugin, "res/DualResonatorPanel.svg")));
 		addChild(panel);
 	}
 
@@ -248,28 +216,28 @@ ResonatorWidget::ResonatorWidget(Resonator *module) : ModuleWidget(module) {
 	addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
     //Upper
-	addParam(ParamWidget::create<StochasmMintLargeKnob>(Vec(52, 30), module, Resonator::UPPER_CHAMBER, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<StochasmMintKnob>(Vec(48, 104), module, Resonator::UPPER_FILTER1, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<StochasmMintKnob>(Vec(85, 104), module, Resonator::UPPER_FILTER2, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<MintMomentarySwitch>(Vec(11, 81), module, Resonator::UPPER_MANUAL, 0.0, 1.0, 0.0));
+	addParam(ParamWidget::create<StochasmMintLargeKnob>(Vec(52, 30), module, DualResonator::UPPER_CHAMBER, 0.0, 10.0, 5.0));
+	addParam(ParamWidget::create<StochasmMintKnob>(Vec(48, 104), module, DualResonator::UPPER_FILTER1, 0.0, 10.0, 5.0));
+	addParam(ParamWidget::create<StochasmMintKnob>(Vec(85, 104), module, DualResonator::UPPER_FILTER2, 0.0, 10.0, 5.0));
+	addParam(ParamWidget::create<MintMomentarySwitch>(Vec(11, 81), module, DualResonator::UPPER_MANUAL, 0.0, 1.0, 0.0));
 
-    addInput(Port::create<PJ301MPort>(Vec(12, 43), Port::INPUT, module, Resonator::UPPER_VOCT));
-    addInput(Port::create<PJ301MPort>(Vec(12, 120), Port::INPUT, module, Resonator::UPPER_GATE));
+    addInput(Port::create<PJ301MPort>(Vec(12, 43), Port::INPUT, module, DualResonator::UPPER_VOCT));
+    addInput(Port::create<PJ301MPort>(Vec(12, 120), Port::INPUT, module, DualResonator::UPPER_GATE));
 
-	addOutput(Port::create<PJ301MPort>(Vec(12, 159), Port::OUTPUT, module, Resonator::UPPER_OUT));
-	addOutput(Port::create<PJ301MPort>(Vec(86, 159), Port::OUTPUT, module, Resonator::UPPER_BITS));
+	addOutput(Port::create<PJ301MPort>(Vec(12, 159), Port::OUTPUT, module, DualResonator::UPPER_OUT));
+	addOutput(Port::create<PJ301MPort>(Vec(86, 159), Port::OUTPUT, module, DualResonator::UPPER_BITS));
 
     //Lower
-	addParam(ParamWidget::create<StochasmMintLargeKnob>(Vec(52, 218), module, Resonator::LOWER_CHAMBER, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<StochasmMintKnob>(Vec(48, 292), module, Resonator::LOWER_FILTER1, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<StochasmMintKnob>(Vec(85, 292), module, Resonator::LOWER_FILTER2, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<MintMomentarySwitch>(Vec(11, 269), module, Resonator::LOWER_MANUAL, 0.0, 1.0, 0.0));
+	addParam(ParamWidget::create<StochasmMintLargeKnob>(Vec(52, 218), module, DualResonator::LOWER_CHAMBER, 0.0, 10.0, 5.0));
+	addParam(ParamWidget::create<StochasmMintKnob>(Vec(48, 292), module, DualResonator::LOWER_FILTER1, 0.0, 10.0, 5.0));
+	addParam(ParamWidget::create<StochasmMintKnob>(Vec(85, 292), module, DualResonator::LOWER_FILTER2, 0.0, 10.0, 5.0));
+	addParam(ParamWidget::create<MintMomentarySwitch>(Vec(11, 269), module, DualResonator::LOWER_MANUAL, 0.0, 1.0, 0.0));
 
-    addInput(Port::create<PJ301MPort>(Vec(12, 230), Port::INPUT, module, Resonator::LOWER_VOCT));
-    addInput(Port::create<PJ301MPort>(Vec(12, 308), Port::INPUT, module, Resonator::LOWER_GATE));
+    addInput(Port::create<PJ301MPort>(Vec(12, 230), Port::INPUT, module, DualResonator::LOWER_VOCT));
+    addInput(Port::create<PJ301MPort>(Vec(12, 308), Port::INPUT, module, DualResonator::LOWER_GATE));
 
-	addOutput(Port::create<PJ301MPort>(Vec(12, 346), Port::OUTPUT, module, Resonator::LOWER_OUT));
-	addOutput(Port::create<PJ301MPort>(Vec(86, 346), Port::OUTPUT, module, Resonator::LOWER_BITS));
+	addOutput(Port::create<PJ301MPort>(Vec(12, 346), Port::OUTPUT, module, DualResonator::LOWER_OUT));
+	addOutput(Port::create<PJ301MPort>(Vec(86, 346), Port::OUTPUT, module, DualResonator::LOWER_BITS));
 
 	//addInput(createInput<PJ301MPort>(Vec(33, 186), module, Resonator::PITCH_INPUT));
 
@@ -300,4 +268,4 @@ Out, PJ301M -> (12, 346)
 Bits, PJ301M -> (86, 346)
 */
 
-Model *modelResonator = Model::create<Resonator, ResonatorWidget>("Stochasm", "Resonator", "Bitstream Resonator", OSCILLATOR_TAG);
+Model *modelDualResonator = Model::create<DualResonator, DualResonatorWidget>("Stochasm", "Proto Dual Resonator", "Prototype Bitstream Dual Resonator", OSCILLATOR_TAG);
