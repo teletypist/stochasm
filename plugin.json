@@ -1,0 +1,25 @@
+{
+  "slug": "com-soundchasing-stochasm",
+  "name": "Stochasm",
+  "version": "1.0.0",
+  "license": "MIT",
+  "brand": "Stochasm",
+  "author": "teletypist",
+  "authorEmail": "",
+  "authorUrl": "https://soundchasing.com",
+  "pluginUrl": "https://github.com/teletypist/stochasm",
+  "manualUrl": "https://github.com/teletypist/stochasm",
+  "sourceUrl": "https://github.com/teletypist/stochasm",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "Resonator",
+      "name": "Resonator",
+      "description": "Bitstream Resonator",
+      "tags": [
+        "Oscillator"
+      ]
+    }
+  ]
+}
