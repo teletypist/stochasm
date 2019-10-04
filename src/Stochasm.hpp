@@ -1,4 +1,4 @@
-#include "rack0.hpp"
+#include "rack.hpp"
 
 
 using namespace rack;
@@ -23,40 +23,40 @@ struct StochasmKnob : SVGKnob {
 
 struct StochasmMintKnob : StochasmKnob {
     StochasmMintKnob() {
-        setSVG(SVG::load(assetPlugin(pluginInstance, "res/MintKnob.svg")));
+        setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintKnob.svg")));
     }
 };
 
 struct StochasmTangerineKnob : StochasmKnob {
     StochasmTangerineKnob() {
-        setSVG(SVG::load(assetPlugin(pluginInstance, "res/TangerineKnob.svg")));
+        setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineKnob.svg")));
     }
 };
 
 
 struct StochasmMintLargeKnob : StochasmKnob {
     StochasmMintLargeKnob() {
-        setSVG(SVG::load(assetPlugin(pluginInstance, "res/MintKnobLarge.svg")));
+        setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintKnobLarge.svg")));
     }
 };
 
 struct StochasmTangerineLargeKnob : StochasmKnob {
     StochasmTangerineLargeKnob() {
-        setSVG(SVG::load(assetPlugin(pluginInstance, "res/TangerineKnobLarge.svg")));
+        setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineKnobLarge.svg")));
     }
 };
 
 struct MintMomentarySwitch : SVGSwitch {
     MintMomentarySwitch() {
-        addFrame(SVG::load(assetPlugin(pluginInstance, "res/MintMomentary0.svg")));
-        addFrame(SVG::load(assetPlugin(pluginInstance, "res/MintMomentary1.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintMomentary0.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintMomentary1.svg")));
     }
 };
 
 struct TangerineMomentarySwitch : SVGSwitch {
     TangerineMomentarySwitch() {
-        addFrame(SVG::load(assetPlugin(pluginInstance, "res/TangerineMomentary0.svg")));
-        addFrame(SVG::load(assetPlugin(pluginInstance, "res/TangerineMomentary1.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineMomentary0.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineMomentary1.svg")));
     }
 };
 
