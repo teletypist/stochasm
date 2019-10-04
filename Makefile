@@ -1,5 +1,5 @@
 # FLAGS will be passed to both the C and C++ compiler
-FLAGS +=
+FLAGS += -w
 CFLAGS +=
 CXXFLAGS +=
 

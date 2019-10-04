@@ -67,11 +67,12 @@ struct Resonator : Module {
     float lPre = 0.f;
 
 
-	Resonator() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+	Resonator() {
+		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);}
 	void step() override;
 
 	// For more advanced Module features, read Rack's engine.hpp header file
-	// - toJson, fromJson: serialization of internal data
+	// - dataToJson, dataFromJson: serialization of internal data
 	// - onSampleRateChange: event triggered by a change of sample rate
 	// - onReset, onRandomize, onCreate, onDelete: implements special behavior when user clicks these from the context menu
 };
@@ -196,7 +197,8 @@ struct ResonatorWidget : ModuleWidget {
 };
 
 
-ResonatorWidget::ResonatorWidget(Resonator *module) : ModuleWidget(module) {
+ResonatorWidget::ResonatorWidget(Resonator *module) {
+		setModule(module);
 	
 	//Resonator *module = new Resonator();
 	//setModule(module);
@@ -206,38 +208,38 @@ ResonatorWidget::ResonatorWidget(Resonator *module) : ModuleWidget(module) {
 	{
 		SVGPanel *panel = new SVGPanel();
 		panel->box.size = box.size;
-		panel->setBackground(SVG::load(assetPlugin(plugin, "res/Resonator.svg")));
+		panel->setBackground(SVG::load(assetPlugin(pluginInstance, "res/Resonator.svg")));
 		addChild(panel);
 	}
 
-	addChild(Widget::create<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
-	addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-	addChild(Widget::create<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-	addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+	addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
+	addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+	addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+	addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
     //Upper
-	addParam(ParamWidget::create<StochasmMintLargeKnob>(Vec(52, 30), module, Resonator::UPPER_CHAMBER, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<StochasmMintKnob>(Vec(48, 104), module, Resonator::UPPER_FILTER1, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<StochasmMintKnob>(Vec(85, 104), module, Resonator::UPPER_FILTER2, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<MintMomentarySwitch>(Vec(11, 81), module, Resonator::UPPER_MANUAL, 0.0, 1.0, 0.0));
+	addParam(createParam<StochasmMintLargeKnob>(Vec(52, 30), module, Resonator::UPPER_CHAMBER, 0.0, 10.0, 5.0));
+	addParam(createParam<StochasmMintKnob>(Vec(48, 104), module, Resonator::UPPER_FILTER1, 0.0, 10.0, 5.0));
+	addParam(createParam<StochasmMintKnob>(Vec(85, 104), module, Resonator::UPPER_FILTER2, 0.0, 10.0, 5.0));
+	addParam(createParam<MintMomentarySwitch>(Vec(11, 81), module, Resonator::UPPER_MANUAL, 0.0, 1.0, 0.0));
 
-    addInput(Port::create<PJ301MPort>(Vec(12, 43), Port::INPUT, module, Resonator::UPPER_VOCT));
-    addInput(Port::create<PJ301MPort>(Vec(12, 120), Port::INPUT, module, Resonator::UPPER_GATE));
+    addInput(createPort<PJ301MPort>(Vec(12, 43), PortWidget::INPUT, module, Resonator::UPPER_VOCT));
+    addInput(createPort<PJ301MPort>(Vec(12, 120), PortWidget::INPUT, module, Resonator::UPPER_GATE));
 
-	addOutput(Port::create<PJ301MPort>(Vec(12, 159), Port::OUTPUT, module, Resonator::UPPER_OUT));
-	addOutput(Port::create<PJ301MPort>(Vec(86, 159), Port::OUTPUT, module, Resonator::UPPER_BITS));
+	addOutput(createPort<PJ301MPort>(Vec(12, 159), PortWidget::OUTPUT, module, Resonator::UPPER_OUT));
+	addOutput(createPort<PJ301MPort>(Vec(86, 159), PortWidget::OUTPUT, module, Resonator::UPPER_BITS));
 
     //Lower
-	addParam(ParamWidget::create<StochasmMintLargeKnob>(Vec(52, 218), module, Resonator::LOWER_CHAMBER, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<StochasmMintKnob>(Vec(48, 292), module, Resonator::LOWER_FILTER1, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<StochasmMintKnob>(Vec(85, 292), module, Resonator::LOWER_FILTER2, 0.0, 10.0, 5.0));
-	addParam(ParamWidget::create<MintMomentarySwitch>(Vec(11, 269), module, Resonator::LOWER_MANUAL, 0.0, 1.0, 0.0));
+	addParam(createParam<StochasmMintLargeKnob>(Vec(52, 218), module, Resonator::LOWER_CHAMBER, 0.0, 10.0, 5.0));
+	addParam(createParam<StochasmMintKnob>(Vec(48, 292), module, Resonator::LOWER_FILTER1, 0.0, 10.0, 5.0));
+	addParam(createParam<StochasmMintKnob>(Vec(85, 292), module, Resonator::LOWER_FILTER2, 0.0, 10.0, 5.0));
+	addParam(createParam<MintMomentarySwitch>(Vec(11, 269), module, Resonator::LOWER_MANUAL, 0.0, 1.0, 0.0));
 
-    addInput(Port::create<PJ301MPort>(Vec(12, 230), Port::INPUT, module, Resonator::LOWER_VOCT));
-    addInput(Port::create<PJ301MPort>(Vec(12, 308), Port::INPUT, module, Resonator::LOWER_GATE));
+    addInput(createPort<PJ301MPort>(Vec(12, 230), PortWidget::INPUT, module, Resonator::LOWER_VOCT));
+    addInput(createPort<PJ301MPort>(Vec(12, 308), PortWidget::INPUT, module, Resonator::LOWER_GATE));
 
-	addOutput(Port::create<PJ301MPort>(Vec(12, 346), Port::OUTPUT, module, Resonator::LOWER_OUT));
-	addOutput(Port::create<PJ301MPort>(Vec(86, 346), Port::OUTPUT, module, Resonator::LOWER_BITS));
+	addOutput(createPort<PJ301MPort>(Vec(12, 346), PortWidget::OUTPUT, module, Resonator::LOWER_OUT));
+	addOutput(createPort<PJ301MPort>(Vec(86, 346), PortWidget::OUTPUT, module, Resonator::LOWER_BITS));
 
 	//addInput(createInput<PJ301MPort>(Vec(33, 186), module, Resonator::PITCH_INPUT));
 
@@ -268,4 +270,4 @@ Out, PJ301M -> (12, 346)
 Bits, PJ301M -> (86, 346)
 */
 
-Model *modelResonator = Model::create<Resonator, ResonatorWidget>("Stochasm", "Resonator", "Bitstream Resonator", OSCILLATOR_TAG);
+Model *modelResonator = createModel<Resonator, ResonatorWidget>("Resonator");
