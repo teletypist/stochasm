@@ -4,7 +4,9 @@
 using namespace rack;
 
 
-extern Plugin *plugin;
+extern Plugin *pluginInstance;
+
+extern Model *modelResonator;
 
 ////////////////////
 // module widgets
@@ -21,40 +23,42 @@ struct StochasmKnob : SVGKnob {
 
 struct StochasmMintKnob : StochasmKnob {
     StochasmMintKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/MintKnob.svg")));
+        setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintKnob.svg")));
     }
 };
 
 struct StochasmTangerineKnob : StochasmKnob {
     StochasmTangerineKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/TangerineKnob.svg")));
+        setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineKnob.svg")));
     }
 };
 
 
 struct StochasmMintLargeKnob : StochasmKnob {
     StochasmMintLargeKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/MintKnobLarge.svg")));
+        setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintKnobLarge.svg")));
     }
 };
 
 struct StochasmTangerineLargeKnob : StochasmKnob {
     StochasmTangerineLargeKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/TangerineKnobLarge.svg")));
+        setSVG(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineKnobLarge.svg")));
     }
 };
 
-struct MintMomentarySwitch : SVGSwitch, MomentarySwitch {
+struct MintMomentarySwitch : SVGSwitch {
     MintMomentarySwitch() {
-        addFrame(SVG::load(assetPlugin(plugin, "res/MintMomentary0.svg")));
-        addFrame(SVG::load(assetPlugin(plugin, "res/MintMomentary1.svg")));
+        momentary = true;
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintMomentary0.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintMomentary1.svg")));
     }
 };
 
-struct TangerineMomentarySwitch : SVGSwitch, MomentarySwitch {
+struct TangerineMomentarySwitch : SVGSwitch {
     TangerineMomentarySwitch() {
-        addFrame(SVG::load(assetPlugin(plugin, "res/TangerineMomentary0.svg")));
-        addFrame(SVG::load(assetPlugin(plugin, "res/TangerineMomentary1.svg")));
+        momentary = true;
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineMomentary0.svg")));
+        addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineMomentary1.svg")));
     }
 };
 
