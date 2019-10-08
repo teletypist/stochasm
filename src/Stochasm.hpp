@@ -48,6 +48,7 @@ struct StochasmTangerineLargeKnob : StochasmKnob {
 
 struct MintMomentarySwitch : SVGSwitch {
     MintMomentarySwitch() {
+        momentary = true;
         addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintMomentary0.svg")));
         addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MintMomentary1.svg")));
     }
@@ -55,6 +56,7 @@ struct MintMomentarySwitch : SVGSwitch {
 
 struct TangerineMomentarySwitch : SVGSwitch {
     TangerineMomentarySwitch() {
+        momentary = true;
         addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineMomentary0.svg")));
         addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TangerineMomentary1.svg")));
     }
